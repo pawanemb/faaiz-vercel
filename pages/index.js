@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 
 export default function Home() {
@@ -10,12 +10,15 @@ export default function Home() {
   const [showApiKey, setShowApiKey] = useState(false);
   const [copied, setCopied] = useState(false);
   const [viewMode, setViewMode] = useState('speakers'); // 'speakers' or 'full'
+  const [transcriptId, setTranscriptId] = useState(null);
+  const [pollingInterval, setPollingInterval] = useState(null);
 
   const handleTranscribe = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setTranscription(null);
+    setTranscriptId(null);
 
     try {
       const response = await fetch('/api/transcribe', {
@@ -32,10 +35,32 @@ export default function Home() {
         throw new Error(data.message || 'Error transcribing audio');
       }
 
-      setTranscription(data);
+      setTranscriptId(data.transcriptId);
+      
+      // Start polling for status
+      const interval = setInterval(async () => {
+        const statusResponse = await fetch('/api/check-status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ transcriptId: data.transcriptId, apiKey }),
+        });
+
+        const statusData = await statusResponse.json();
+
+        if (statusData.status === 'completed') {
+          setTranscription(statusData);
+          setLoading(false);
+          clearInterval(interval);
+        } else if (statusData.status === 'error') {
+          throw new Error(statusData.error || 'Error processing transcription');
+        }
+      }, 3000); // Check every 3 seconds
+
+      setPollingInterval(interval);
     } catch (err) {
       setError(err.message);
-    } finally {
       setLoading(false);
     }
   };
@@ -60,6 +85,14 @@ export default function Home() {
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
+
+  useEffect(() => {
+    return () => {
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+      }
+    };
+  }, [pollingInterval]);
 
   return (
     <div className="min-h-screen bg-gray-100">
