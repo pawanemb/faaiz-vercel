@@ -62,182 +62,119 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-800 to-blue-900 text-white">
+    <div className="min-h-screen bg-gray-100">
       <Head>
-        <title>Faaiz - Speaker Detection & Transcription</title>
+        <title>Faaiz - AI Audio Transcription</title>
+        <meta name="description" content="AI-powered audio transcription with speaker detection" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto px-4 py-8 min-h-screen flex flex-col">
-        <div className="text-center mb-12">
-          <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 mb-4">
-            Faaiz
-          </h1>
-          <p className="text-xl text-gray-300">AI-powered audio transcription with speaker detection</p>
-        </div>
+      <main className="container mx-auto px-4 py-8 max-w-3xl">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Faaiz</h1>
+        <p className="text-lg text-gray-600 mb-8">AI-powered audio transcription with speaker detection</p>
 
-        <div className="flex-grow flex flex-col lg:flex-row gap-8 items-stretch">
-          {/* Input Section */}
-          <div className="lg:w-1/2 bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl">
-            <form onSubmit={handleTranscribe} className="space-y-6">
-              <div>
-                <label className="block text-lg font-medium text-gray-200 mb-2">
-                  AssemblyAI API Key
-                </label>
-                <div className="relative">
-                  <input
-                    type={showApiKey ? "text" : "password"}
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    placeholder="Enter your AssemblyAI API key"
-                    className="block w-full rounded-xl border-2 border-indigo-500/30 bg-black/20 shadow-inner focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 sm:text-sm p-4 text-white placeholder-gray-400"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowApiKey(!showApiKey)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-300 hover:text-white transition-colors"
-                  >
-                    {showApiKey ? "Hide" : "Show"}
-                  </button>
-                </div>
-                <p className="mt-2 text-sm text-gray-300">
-                  Don't have an API key? <a href="https://www.assemblyai.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 underline">Get one here</a>
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-lg font-medium text-gray-200 mb-2">
-                  Audio URL
-                </label>
-                <input
-                  type="text"
-                  value={audioUrl}
-                  onChange={(e) => setAudioUrl(e.target.value)}
-                  placeholder="Enter audio URL (MP3, WAV, etc.)"
-                  className="block w-full rounded-xl border-2 border-indigo-500/30 bg-black/20 shadow-inner focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 sm:text-sm p-4 text-white placeholder-gray-400"
-                  required
-                />
-                <p className="mt-2 text-sm text-gray-300">
-                  Enter a publicly accessible audio file URL
-                </p>
-              </div>
-              
+        <form onSubmit={handleTranscribe} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              AssemblyAI API Key
+            </label>
+            <div className="relative">
+              <input
+                type={showApiKey ? "text" : "password"}
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter your API key"
+              />
               <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-4 px-6 border-2 border-transparent rounded-xl text-lg font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition-all duration-200 shadow-lg hover:shadow-xl disabled:cursor-not-allowed"
+                type="button"
+                onClick={() => setShowApiKey(!showApiKey)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
               >
-                {loading ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Transcribing...
-                  </span>
-                ) : (
-                  'Start Transcription'
-                )}
+                {showApiKey ? "Hide" : "Show"}
               </button>
-            </form>
-
-            {error && (
-              <div className="mt-6 p-4 bg-red-900/50 border-2 border-red-500/50 rounded-xl">
-                <p className="text-red-200">
-                  Error: {error}
-                </p>
-              </div>
-            )}
+            </div>
+            <a
+              href="https://www.assemblyai.com/dashboard/signup"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-1 text-sm text-blue-600 hover:text-blue-800"
+            >
+              Don't have an API key? Get one here
+            </a>
           </div>
 
-          {/* Result Section */}
-          <div className="lg:w-1/2 bg-white/10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl">
-            <div className="h-full flex flex-col">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-semibold text-gray-200">Transcription Result</h2>
-                {transcription && (
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => setViewMode('speakers')}
-                      className={`px-3 py-1 rounded-lg text-sm ${
-                        viewMode === 'speakers'
-                          ? 'bg-indigo-500 text-white'
-                          : 'bg-black/20 text-gray-300 hover:bg-indigo-500/20'
-                      }`}
-                    >
-                      Speakers View
-                    </button>
-                    <button
-                      onClick={() => setViewMode('full')}
-                      className={`px-3 py-1 rounded-lg text-sm ${
-                        viewMode === 'full'
-                          ? 'bg-indigo-500 text-white'
-                          : 'bg-black/20 text-gray-300 hover:bg-indigo-500/20'
-                      }`}
-                    >
-                      Full Text
-                    </button>
-                  </div>
-                )}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Audio URL
+            </label>
+            <input
+              type="text"
+              value={audioUrl}
+              onChange={(e) => setAudioUrl(e.target.value)}
+              placeholder="Enter audio URL (MP3, WAV)"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Enter a publicly accessible audio file URL
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 px-4 rounded-md text-white font-medium ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {loading ? "Transcribing..." : "Start Transcription"}
+          </button>
+        </form>
+
+        {error && (
+          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-red-600">{error}</p>
+          </div>
+        )}
+
+        {transcription && (
+          <div className="mt-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold text-gray-900">Transcription Result</h2>
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => setViewMode(viewMode === 'speakers' ? 'full' : 'speakers')}
+                  className="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300"
+                >
+                  {viewMode === 'speakers' ? 'View Full Text' : 'View By Speaker'}
+                </button>
+                <button
+                  onClick={handleCopy}
+                  className="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300"
+                >
+                  {copied ? 'Copied!' : 'Copy Text'}
+                </button>
               </div>
-              
-              {transcription ? (
-                <>
-                  <div className="flex-grow relative">
-                    <div className="absolute inset-0 overflow-auto rounded-xl bg-black/20 p-6 border-2 border-indigo-500/30">
-                      {viewMode === 'speakers' ? (
-                        <div className="space-y-4">
-                          {transcription.utterances.map((utterance, index) => (
-                            <div key={index} className="flex flex-col space-y-1">
-                              <div className="flex items-center space-x-2">
-                                <span className="text-indigo-400 font-semibold">Speaker {utterance.speaker}</span>
-                                <span className="text-gray-400 text-sm">
-                                  {formatTime(utterance.start)} - {formatTime(utterance.end)}
-                                </span>
-                              </div>
-                              <p className="text-gray-200 pl-4 border-l-2 border-indigo-500/30">
-                                {utterance.text}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-gray-200 whitespace-pre-wrap font-mono">
-                          {transcription.fullText}
-                        </p>
-                      )}
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              {viewMode === 'speakers' ? (
+                <div className="space-y-4">
+                  {transcription.utterances.map((utterance, index) => (
+                    <div key={index} className="pb-4 border-b border-gray-100 last:border-0">
+                      <p className="font-medium text-blue-600 mb-1">Speaker {utterance.speaker}</p>
+                      <p className="text-gray-700">{utterance.text}</p>
                     </div>
-                  </div>
-                  <button
-                    onClick={handleCopy}
-                    className="mt-4 inline-flex items-center justify-center px-4 py-2 border-2 border-indigo-500/30 rounded-xl text-sm font-medium text-white hover:bg-indigo-500/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200"
-                  >
-                    {copied ? (
-                      <span className="flex items-center">
-                        <svg className="w-5 h-5 mr-2 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        Copied!
-                      </span>
-                    ) : (
-                      <span className="flex items-center">
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                        </svg>
-                        Copy to Clipboard
-                      </span>
-                    )}
-                  </button>
-                </>
-              ) : (
-                <div className="flex-grow flex items-center justify-center text-gray-400 text-lg">
-                  Transcription results will appear here
+                  ))}
                 </div>
+              ) : (
+                <p className="text-gray-700 whitespace-pre-wrap">{transcription.fullText}</p>
               )}
             </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
