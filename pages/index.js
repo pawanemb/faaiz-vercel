@@ -112,7 +112,7 @@ export default function Home() {
               type="text"
               value={audioUrl}
               onChange={(e) => setAudioUrl(e.target.value)}
-              placeholder="Enter audio URL (MP3, WAV)"
+              placeholder="Enter audio URL (Only MP3)"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
             <p className="mt-1 text-sm text-gray-500">
