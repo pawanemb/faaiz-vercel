@@ -15,10 +15,5 @@
   "github": {
     "enabled": true,
     "silent": true
-  },
-  "buildCommand": "next build",
-  "devCommand": "next dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "outputDirectory": ".next"
+  }
 }
